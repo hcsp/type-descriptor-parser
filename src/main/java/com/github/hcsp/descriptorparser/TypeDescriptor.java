@@ -28,13 +28,13 @@ public interface TypeDescriptor {
      * @return PrimitiveTypeDescriptor/ReferenceDescriptor/MethodDescriptor/PrimitiveTypeDescriptor
      */
     static TypeDescriptor parse(String descriptor) {
-
         if (descriptor.startsWith(REFERENCE_TYPE_PREFIX)) {
             return new ReferenceDescriptor(descriptor);
-        } else {
+        } else if (PrimitiveTypeDescriptor.isPrimitive(descriptor)) {
             return PrimitiveTypeDescriptor.of(descriptor);
+        } else {
+            return new ArrayDescriptor(descriptor);
         }
-
     }
 }
 
