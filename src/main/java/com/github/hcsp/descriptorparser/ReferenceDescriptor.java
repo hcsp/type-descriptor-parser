@@ -11,6 +11,14 @@ public class ReferenceDescriptor implements TypeDescriptor {
     private String descriptor;
 
     public ReferenceDescriptor(String descriptor) {
+        StringBuilder rs = new StringBuilder();
+        if (descriptor.endsWith(";"))
+            descriptor= descriptor.substring(0,descriptor.length()-1);
+        if (descriptor.startsWith("L")) {
+            descriptor = descriptor.substring(1);
+            rs.append(descriptor.replace("/", "."));
+        }
+        this.fqcn =rs.toString();
     }
 
     @Override
