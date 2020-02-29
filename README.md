@@ -20,7 +20,7 @@ Ready? Go.
 | L`<ClassName>`; | reference | 例如`java.lang.String`表示为`Ljava/lang/String;`                                                             |
 | S             | short     |                                                                                                          |
 | Z             | boolean   |                                                                                                          |
-| [             | 数组      | 多维数组每增加一个纬度，前面增加一个`[`。例如，`int[]`的描述符是`[I`, `String[][]`的描述符是`[[Ljava/lang/String;`|
+| [             | 数组      | 多维数组每增加一个维度，前面增加一个`[`。例如，`int[]`的描述符是`[I`, `String[][]`的描述符是`[[Ljava/lang/String;`|
 
 
 同理，这些描述符也被用来描述方法，如方法
