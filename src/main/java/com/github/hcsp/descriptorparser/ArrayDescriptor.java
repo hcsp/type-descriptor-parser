@@ -35,7 +35,7 @@ public class ArrayDescriptor implements TypeDescriptor {
     public ArrayDescriptor(String descriptor) {
         this.descriptor = descriptor;
 
-        String arrayDimension = buildArrayDimensionDesc(descriptor);
+        String arrayDimensionDesc = buildArrayDimensionDesc(descriptor);
 
         String dataTypeDesc = dimension > 0 ? descriptor.substring(dimension) : descriptor;
 
@@ -45,7 +45,7 @@ public class ArrayDescriptor implements TypeDescriptor {
             this.rawType = PrimitiveTypeDescriptor.of(dataTypeDesc);
         }
 
-        this.name = rawType.getName() + arrayDimension;
+        this.name = rawType.getName() + arrayDimensionDesc;
     }
 
     /**
