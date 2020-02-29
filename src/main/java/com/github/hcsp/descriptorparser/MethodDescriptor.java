@@ -1,8 +1,6 @@
 package com.github.hcsp.descriptorparser;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,64 +17,47 @@ public class MethodDescriptor implements TypeDescriptor {
 
     public static final String END_POINT = "\\)";
 
+    public static final int PARAM_TYPE_INDEX = 1;
+    public static final int RETURN_TYPE_INDEX = 0;
+
     public MethodDescriptor(String descriptor) {
         String[] array = descriptor.split(END_POINT);
 
         this.descriptor = descriptor;
-        this.returnType = TypeDescriptor.parse(array[1]);
+        this.returnType = TypeDescriptor.parse(array[PARAM_TYPE_INDEX]);
+        char[] paramDescArray = array[RETURN_TYPE_INDEX].toCharArray();
 
-        char[] descArray = array[0].toCharArray();
-
-        for(int i = 0 ;i<descArray.length; i++){
-            switch (descArray[i]){
+        for(int i = 0; i< paramDescArray.length; i++){
+            switch (paramDescArray[i]){
                 case '(':
                     break;
-                case ')':
-                    break;
-
-
-                case 'L': {
-
+                default:
                     StringBuffer stringBuffer = new StringBuffer();
-                    while ( i < descArray.length ) {
-                        stringBuffer.append(descArray[i]);
-                        if(isEndOfReferenceType(descArray[i])){
-                            break;
-                        }
-                        i++;
-                    }
-
-                    paramTypes.add(TypeDescriptor.parse(stringBuffer.toString()));
-                    break;
-                }
-
-
-                case '[': {
-                    StringBuffer stringBuffer = new StringBuffer();
-
-                    while ( i < descArray.length) {
-                        stringBuffer.append(descArray[i]);
-                        boolean isPrimitiveType = PrimitiveTypeDescriptor.isPrimitive(Character.toString(descArray[i]));
+                    while ( i < paramDescArray.length) {
+                        stringBuffer.append(paramDescArray[i]);
+                        boolean isPrimitiveType = PrimitiveTypeDescriptor.isPrimitive(Character.toString(paramDescArray[i]));
                         if (isPrimitiveType){
                             break;
                         }
-                        if (isEndOfReferenceType(descArray[i])){
+                        if (isEndOfReferenceType(paramDescArray[i])){
                             break;
                         }
                         i++;
                     }
-
                     paramTypes.add(TypeDescriptor.parse(stringBuffer.toString()));
                     break;
                 }
-
-
-                default:
-                    paramTypes.add(TypeDescriptor.parse(Character.toString(descArray[i])));
-                    break;
-            }
         }
 
+        StringBuffer paramsDesc = buildMethodNameDesc();
+        this.name = paramsDesc.toString();
+    }
+
+    /**
+     * 构造函数描述
+     * @return
+     */
+    private StringBuffer buildMethodNameDesc() {
         StringBuffer paramsDesc = new StringBuffer();
         paramsDesc.append(this.returnType.getName());
         paramsDesc.append(" (");
@@ -94,7 +75,7 @@ public class MethodDescriptor implements TypeDescriptor {
         }
 
         paramsDesc.append(")");
-        this.name = paramsDesc.toString();
+        return paramsDesc;
     }
 
     /**
