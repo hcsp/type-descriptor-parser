@@ -16,6 +16,7 @@ public class DescriptorTest {
 
     @Test
     public void arrayDescriptorTest() {
+        String descriptor = PrimitiveTypeDescriptor.INT.getName();
         Assertions.assertEquals("java.lang.Object[]", new ArrayDescriptor("[Ljava/lang/Object;").getName());
         Assertions.assertEquals("int[][][]", new ArrayDescriptor("[[[I").getName());
     }

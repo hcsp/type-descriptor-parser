@@ -16,6 +16,21 @@ public class ArrayDescriptor implements TypeDescriptor {
 
     // [[Ljava/lang/Object;
     public ArrayDescriptor(String descriptor) {
+        String tempName = "";
+        for (int i = 0; i < descriptor.length(); i++) {
+            char curChar = descriptor.charAt(i);
+            if ("[".equals(String.valueOf(curChar))) {
+                tempName = tempName.concat("[]");
+                continue;
+            }
+            if ("L".equals(String.valueOf(curChar))) {
+                tempName = new ReferenceDescriptor(descriptor.substring(i)).getName().concat(tempName);
+                break;
+            }
+            tempName = PrimitiveTypeDescriptor.of(descriptor.substring(i)).getName().concat(tempName);
+            break;
+        }
+        this.name = tempName;
     }
 
     @Override
