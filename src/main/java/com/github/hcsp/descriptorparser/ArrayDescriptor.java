@@ -20,8 +20,7 @@ public class ArrayDescriptor implements TypeDescriptor {
 
     public static final String CHARACTER_REGEX = "\\[";
 
-    public static final String REFERENCE_TYPE_PREFIX = "L";
-
+    // 数组语法后缀
     public static final String ARRAY_SUFFIX = "[]";
 
     private static final Pattern arrayPattern;
@@ -39,11 +38,7 @@ public class ArrayDescriptor implements TypeDescriptor {
 
         String dataTypeDesc = dimension > 0 ? descriptor.substring(dimension) : descriptor;
 
-        if (dataTypeDesc.startsWith(REFERENCE_TYPE_PREFIX)) {
-            this.rawType =  new ReferenceDescriptor(dataTypeDesc);
-        } else {
-            this.rawType = PrimitiveTypeDescriptor.of(dataTypeDesc);
-        }
+        this.rawType = TypeDescriptor.parse(dataTypeDesc);
 
         this.name = rawType.getName() + arrayDimensionDesc;
     }
@@ -56,7 +51,7 @@ public class ArrayDescriptor implements TypeDescriptor {
     private String buildArrayDimensionDesc(String descriptor) {
         Matcher matcher = arrayPattern.matcher(descriptor);
 
-        StringBuffer arrayDimensionDesc = new StringBuffer(1 << 5);
+        StringBuffer arrayDimensionDesc = new StringBuffer();
         while (matcher.find()) {
             dimension++;
             arrayDimensionDesc.append(ARRAY_SUFFIX);
