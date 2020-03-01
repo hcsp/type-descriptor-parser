@@ -1,12 +1,6 @@
 package com.github.hcsp.descriptorparser;
 
 public interface TypeDescriptor {
-
-    /**
-     * 引用类型前缀
-     */
-    String REFERENCE_TYPE_PREFIX = "L";
-
     /**
      * 返回人类可读的类型名，如int或者java.lang.Object[]
      *
@@ -23,18 +17,11 @@ public interface TypeDescriptor {
 
     /**
      * 解析一个描述符，根据其具体类型返回不同的子类
-     *
      * @param descriptor
      * @return PrimitiveTypeDescriptor/ReferenceDescriptor/MethodDescriptor/PrimitiveTypeDescriptor
      */
     static TypeDescriptor parse(String descriptor) {
-        if (descriptor.startsWith(REFERENCE_TYPE_PREFIX)) {
-            return new ReferenceDescriptor(descriptor);
-        } else if (PrimitiveTypeDescriptor.isPrimitive(descriptor)) {
-            return PrimitiveTypeDescriptor.of(descriptor);
-        } else {
-            return new ArrayDescriptor(descriptor);
-        }
+        return null;
     }
 }
 
