@@ -11,6 +11,8 @@ public class ReferenceDescriptor implements TypeDescriptor {
     private String descriptor;
 
     public ReferenceDescriptor(String descriptor) {
+        this.descriptor = descriptor;
+        this.fqcn = descriptor.substring(1, descriptor.length() - 1).replace('/', '.');
     }
 
     @Override
@@ -22,4 +24,5 @@ public class ReferenceDescriptor implements TypeDescriptor {
     public String getDescriptor() {
         return descriptor;
     }
+
 }
