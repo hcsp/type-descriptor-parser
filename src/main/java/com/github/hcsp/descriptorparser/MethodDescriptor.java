@@ -18,55 +18,7 @@ public class MethodDescriptor implements TypeDescriptor {
     private String descriptor;
     private String name;
 
-    private static final Pattern methodPattern = Pattern.compile("(\\(.*\\))([BCDFIJSZV]|L[\\w\\/\\$]*;)");
-    private static final Pattern paraPattern = Pattern.compile("(\\[{1,})?([BCDFIJSZV]|L[\\w\\/\\$]*;)");
-
     public MethodDescriptor(String descriptor) {
-        Matcher methodMatcher = methodPattern.matcher(descriptor);
-        if (methodMatcher.find()) {
-            String parameterInfo = methodMatcher.group(1);
-            buildPara(parameterInfo);
-
-            String returnInfo = methodMatcher.group(2);
-            buildReturnType(returnInfo);
-
-            buildName();
-        }
-    }
-
-    private void buildName() {
-        StringBuilder builder = new StringBuilder(returnType.getName() + " ");
-        builder.append("(");
-        String collect = paramTypes.stream().map(TypeDescriptor::getName)
-                .collect(Collectors.joining(", "));
-        builder.append(collect);
-        builder.append(")");
-        this.name = builder.toString();
-    }
-
-    private void buildReturnType(String returnInfo) {
-        if (PrimitiveTypeDescriptor.isPrimitive(returnInfo)) {
-            this.returnType = PrimitiveTypeDescriptor.of(returnInfo);
-        } else {
-            this.returnType = new ReferenceDescriptor(returnInfo);
-        }
-    }
-
-    private void buildPara(String parameterInfo) {
-        Matcher matcher = paraPattern.matcher(parameterInfo);
-        //这里需要多次匹配
-        while (matcher.find()) {
-            if (matcher.group(1) == null) {
-                String type = matcher.group(2);
-                if (PrimitiveTypeDescriptor.isPrimitive(type)) {
-                    paramTypes.add(PrimitiveTypeDescriptor.of(type));
-                } else {
-                    paramTypes.add(new ReferenceDescriptor(type));
-                }
-            } else {
-                paramTypes.add(new ArrayDescriptor(matcher.group(1) + matcher.group(2)));
-            }
-        }
     }
 
 
