@@ -18,18 +18,9 @@ public interface TypeDescriptor {
     /**
      * 解析一个描述符，根据其具体类型返回不同的子类
      * @param descriptor
-     * @return ArrayDescriptor/ReferenceDescriptor/MethodDescriptor/PrimitiveTypeDescriptor
+     * @return PrimitiveTypeDescriptor/ReferenceDescriptor/MethodDescriptor/PrimitiveTypeDescriptor
      */
     static TypeDescriptor parse(String descriptor) {
-        char firstChacarter = descriptor.charAt(0);
-        switch (firstChacarter){
-            case '[' :
-                return new ArrayDescriptor(descriptor);
-            case 'L' :
-                return new ReferenceDescriptor(descriptor);
-            case '(' :
-                return new MethodDescriptor(descriptor);
-        }
         return null;
     }
 }

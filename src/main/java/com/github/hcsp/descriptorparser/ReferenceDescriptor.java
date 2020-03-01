@@ -10,11 +10,7 @@ public class ReferenceDescriptor implements TypeDescriptor {
     private String fqcn;
     private String descriptor;
 
-    //Ljava/lang/Thread;
     public ReferenceDescriptor(String descriptor) {
-        this.descriptor = "L";
-        this.fqcn = descriptor.replaceAll("/",".")
-                .substring(1, descriptor.length() - 1);
     }
 
     @Override
