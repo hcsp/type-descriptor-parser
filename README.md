@@ -20,7 +20,7 @@ Ready? Go.
 | L`<ClassName>`; | reference | 例如`java.lang.String`表示为`Ljava/lang/String;`                                                             |
 | S             | short     |                                                                                                          |
 | Z             | boolean   |                                                                                                          |
-| [             | 数组      | 多维数组每增加一个纬度，前面增加一个`[`。例如，`int[]`的描述符是`[I`, `String[][]`的描述符是`[[Ljava/lang/String;`|
+| [             | 数组      | 多维数组每增加一个维度，前面增加一个`[`。例如，`int[]`的描述符是`[I`, `String[][]`的描述符是`[[Ljava/lang/String;`|
 
 
 同理，这些描述符也被用来描述方法，如方法
@@ -43,6 +43,6 @@ Object m(int i, double d, Thread t) {...}
 
 -----
 注意！我们只允许你修改以下文件，对其他文件的修改会被拒绝：
-- [src/main/java/com/github/hcsp/descriptorparser](https://github.com/hcsp/type-descriptor-parser/blob/master/src/main/java/com/github/hcsp/descriptorparser)
+- [src/main/java/com/github/hcsp/descriptorparser/](https://github.com/hcsp/type-descriptor-parser/blob/master/src/main/java/com/github/hcsp/descriptorparser/)
 -----
 

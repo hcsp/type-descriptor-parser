@@ -1,1 +1,1 @@
-src/main/java/com/github/hcsp/descriptorparser
+src/main/java/com/github/hcsp/descriptorparser/
