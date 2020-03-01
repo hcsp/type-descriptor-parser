@@ -1,10 +1,9 @@
 package com.github.hcsp.descriptorparser;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 代表方法的描述符，如给定方法描述符(IDLjava/lang/Thread;)Ljava/lang/Object;
@@ -19,6 +18,23 @@ public class MethodDescriptor implements TypeDescriptor {
     private String name;
 
     public MethodDescriptor(String descriptor) {
+        this.descriptor = descriptor;
+
+        LinkedList<Character> linkedList = new LinkedList();
+        String paramsDesc = descriptor.substring(descriptor.indexOf("(") + 1, descriptor.lastIndexOf(")"));
+        paramsDesc.chars().mapToObj(i -> (char) i).forEach(x -> {
+                linkedList.add(x);
+                if(PrimitiveTypeDescriptor.isPrimitive(x.toString()) || x.toString().equals(";")) {
+                    String desc = (String) Stream.of(linkedList.toArray()).reduce("", (a, b) -> a.toString() + b.toString());
+                    paramTypes.add(checkTypeDescriptor(desc));
+                    linkedList.clear();
+                }
+        });
+
+        String returnDesc = descriptor.substring(descriptor.lastIndexOf(")") + 1);
+        this.returnType = checkTypeDescriptor(returnDesc);
+
+        this.name = this.createName();
     }
 
 
@@ -38,6 +54,34 @@ public class MethodDescriptor implements TypeDescriptor {
     @Override
     public String getDescriptor() {
         return descriptor;
+    }
+
+    static TypeDescriptor checkTypeDescriptor(String desc) {
+        if(PrimitiveTypeDescriptor.isPrimitive(desc)) {
+            return PrimitiveTypeDescriptor.of(desc);
+        } else if(desc.startsWith("[")) {
+            return new ArrayDescriptor(desc);
+        } else {
+            return new ReferenceDescriptor(desc);
+        }
+    }
+
+    public String createName() {
+        StringBuilder sb = new StringBuilder(returnType.getName() + " (");
+        for(int i = 0; i < paramTypes.size(); i++) {
+            String paramName = paramTypes.get(i).getName();
+            if(i < paramTypes.size() - 1) {
+                sb.append(paramName.toLowerCase()).append(", ");
+            } else {
+                sb.append(paramName);
+            }
+        }
+        sb.append(")");
+        return sb.toString();
+    }
+
+    public static void main(String[] args) {
+        new MethodDescriptor("(IDLjava/lang/Thread;[[java/lang/Thread;)Ljava/lang/Object;");
     }
 }
 
