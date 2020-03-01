@@ -20,11 +20,35 @@ public enum PrimitiveTypeDescriptor implements TypeDescriptor {
     }
 
     public static PrimitiveTypeDescriptor of(String descriptor) {
-        return null;
+        if (BYTE.descriptor.equals(descriptor)) {
+            return BYTE;
+        } else if (CHAR.descriptor.equals(descriptor)) {
+            return CHAR;
+        } else if (DOUBLE.descriptor.equals(descriptor)) {
+            return DOUBLE;
+        } else if (FLOAT.descriptor.equals(descriptor)) {
+            return FLOAT;
+        } else if (INT.descriptor.equals(descriptor)) {
+            return INT;
+        } else if (LONG.descriptor.equals(descriptor)) {
+            return LONG;
+        } else if (SHORT.descriptor.equals(descriptor)) {
+            return SHORT;
+        } else if (BOOLEAN.descriptor.equals(descriptor)) {
+            return BOOLEAN;
+        } else if (VOID.descriptor.equals(descriptor)) {
+            return VOID;
+        } else {
+            return null;
+        }
     }
 
     public static boolean isPrimitive(String descriptor) {
-        return false;
+        PrimitiveTypeDescriptor of = PrimitiveTypeDescriptor.of(descriptor);
+        if (of == null) {
+            return false;
+        }
+        return true;
     }
 
     @Override
