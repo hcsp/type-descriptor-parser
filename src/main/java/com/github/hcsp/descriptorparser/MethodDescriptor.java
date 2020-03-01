@@ -36,53 +36,75 @@ public class MethodDescriptor implements TypeDescriptor {
         int find_boundary_for_array;
         for (int i = 0; i < chars.length; i++) {
             int current_i = i;
+            int end_position_reference = 0;
+            int end_position_array = 0;
             String new_char = Character.toString(chars[i]);
-            //如果是Primitive
+            //如果是Primitive, new_char是I, 直接从I parse为 int
             if (new_char.matches("[BCDFIJSZ]")) {
                 paramTypes.add(TypeDescriptor.parse(new_char));
             }
-            //如果是数组， 找和它最近的type
+            //如果是数组, new_char是[, 但需要[D或[[I去解析, 所以要找和它最近的type
             if (new_char.equals("[")) {
-                //找到下一个type的位置
+                /**
+                 * 找到下一个type的位置，通过substring得到[D or [[I
+                 * 有一个坑点是substring的参数endindex, 虽然是substring(beginindex, endindex)
+                 * 实际得到的是Beginindex到endindex-1的字符串, 长度会减一
+                 * 所以这里的end_position_array应该加一, 再传入substring
+                 * 例如[的index 是1, D的index是2, end_position_array = 2,
+                 * 但substring(1, 2)只能得到[, substring(1, 3)才能得到[D
+                 * */
                 for (find_boundary_for_array = i + 1; find_boundary_for_array < descriptors.get(0).length(); find_boundary_for_array++) {
                     if (Character.toString(chars[find_boundary_for_array]).matches("[BCDFIJSZL]")) {
-                        i = find_boundary_for_array;
+                        end_position_array = find_boundary_for_array + 1;
                         break;
                     }
                 }
                 //如果是引用类型的数组
                 if (chars[find_boundary_for_array] == 'L') {
-                    //需要输入L过后的所有char
-                    //检查L过后还有没有标识符
-                    int end_position_reference = 0;
-                    for (int j = descriptors.get(0).indexOf("L"); j < descriptors.get(0).length(); j++) {
+                    /**
+                     * 检查L过后还有没有标识符, 以下一个Type标识符的index作为endIndex,
+                     * 用substring得到引用的完整字符串Ljava/lang/Thread
+                     * */
+                    for (int j = find_boundary_for_array + 1; j < descriptors.get(0).length(); j++) {
                         //如果有
-                        if (Character.toString(chars[j]).matches("[BCDFIJSZ]")) {
-                            end_position_reference = j;
-                        } else {
-                            end_position_reference = descriptors.get(0).length() - 1;
+                        if (Character.toString(chars[j]).matches("[BCDFIJSLZ\\[]")) {
+                            end_position_array = j;
+                            break;
+                        } else if (j == descriptors.get(0).length() - 1) {//找到最后都没有找到
+                            end_position_array = descriptors.get(0).length();
                         }
                     }
-                    i = end_position_reference;
+
                 }
-                String reference = descriptors.get(0).substring(current_i, i + 1);
+                String reference = descriptors.get(0).substring(current_i, end_position_array);
                 paramTypes.add(TypeDescriptor.parse(reference));
+                i = end_position_array - 1;
             }
             if (new_char.matches("L")) {
-                //需要输入L过后的所有char
-                //检查L过后还有没有标识符
-                int end_position_reference = 0;
-                for (int j = descriptors.get(0).indexOf("L"); j < descriptors.get(0).length(); j++) {
+                /**
+                 * 检查L过后还有没有标识符, 以下一个Type标识符的index作为endIndex,
+                 * 用substring得到引用的完整字符串Ljava/lang/Thread
+                 * */
+                //
+                int end_position_reference_L = 0;
+                for (int j = i + 1; j < descriptors.get(0).length(); j++) {
                     //如果有
-                    if (Character.toString(chars[j]).matches("[BCDFIJSZ]")) {
-                        end_position_reference = j;
-                    } else { //如果没有
-                        end_position_reference = descriptors.get(0).length();
+                    if (Character.toString(chars[j]).matches("[BCDFIJSZL\\[]")) {
+                        end_position_reference_L = j;
+                        break;
+                    } else if (j == descriptors.get(0).length() - 1) {
+                        //找到最后都没找到
+                        end_position_reference_L = descriptors.get(0).length();
                     }
                 }
-                i = end_position_reference;
-                String reference = descriptors.get(0).substring(descriptors.get(0).indexOf("L"), end_position_reference);
+
+                String reference = descriptors.get(0).substring(i, end_position_reference_L);
                 paramTypes.add(TypeDescriptor.parse(reference));
+                /**
+                 * 因为一轮循环后，开始下轮循环之前会i++
+                 * 所以提前减一
+                 * */
+                i = end_position_reference_L - 1;
             }
         }
 
@@ -127,7 +149,8 @@ public class MethodDescriptor implements TypeDescriptor {
     }
 
     public static void main(String[] args) {
-        new MethodDescriptor("(IDLjava/lang/Thread;)Ljava/lang/Object");
+//        new MethodDescriptor("([Ljava/lang/ObjectI;)V");
+        new MethodDescriptor("([DLjava/lang/Thread[I[[BF;)Ljava/lang/Object");
     }
 }
 
