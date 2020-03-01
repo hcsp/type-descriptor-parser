@@ -19,6 +19,7 @@ public class MethodDescriptor implements TypeDescriptor {
     private String name;
 
     public MethodDescriptor(String descriptor) {
+        this.descriptor = descriptor;
         List<TypeDescriptor> TypeDescriptorList = new ArrayList<>();
 
         //拼接字符串
@@ -30,40 +31,53 @@ public class MethodDescriptor implements TypeDescriptor {
         TypeDescriptor returnType = TypeDescriptor.parse(returnTypeTemp);
         this.returnType = returnType;
         String returnTypeStr = returnType.getName();
-        stringBuffer.append(returnTypeStr);
+        stringBuffer.append(returnTypeStr + " ");
 
         //请求参数
         String paramTypesTemp = descriptor.substring(descriptor.lastIndexOf("(") + 1 ,descriptor.lastIndexOf(")"));
-
-        stringBuffer.append("(");
-        String[] arr = paramTypesTemp.split("");
-        //参数序号
-        int params = 1;
-        for(int i = 0; i < arr.length; i++){
-            //参数
-            String param;
-            //原生类型
-            if(Pattern.matches("[B,C,D,F,I,J,S,Z,V]", arr[i])){
-                param = arr[i];
-            } else {
-                //引用类型、数组类型
-                param = paramTypesTemp.substring(0,paramTypesTemp.indexOf(";") + 1);
-                //多个字符
-                i = i + param.length() -1 ;
+        if (paramTypesTemp.equals("")){
+            this.name = stringBuffer.append("()").toString();
+            this.paramTypes = TypeDescriptorList;
+        }else{
+            stringBuffer.append("(");
+            String[] arr = paramTypesTemp.split("");
+            //参数序号
+            int params = 1;
+            for(int i = 0; i < arr.length; i++){
+                //参数
+                String param;
+                //原生类型
+                if(Pattern.matches("[B,C,D,F,I,J,S,Z,V]", arr[i])){
+                    param = arr[i];
+                } else if("[".equalsIgnoreCase(arr[i])) {
+                    if(Pattern.matches("[B,C,D,F,I,J,S,Z,V]", arr[i+1])){
+                        param = arr[i] + arr[i+1];
+                        i = ++i;
+                    }else{
+                        //引用类型、数组类型
+                        param = paramTypesTemp.substring(0,paramTypesTemp.indexOf(";") + 1);
+                        //多个字符
+                        i = i + param.length() -1 ;
+                    }
+                }else{
+                    //引用类型、数组类型
+                    param = paramTypesTemp.substring(0,paramTypesTemp.indexOf(";") + 1);
+                    //多个字符
+                    i = i + param.length() -1 ;
+                }
+                TypeDescriptor typeDescriptor = TypeDescriptor.parse(param);
+                TypeDescriptorList.add(typeDescriptor);
+                String tempName = typeDescriptor.getName();
+                stringBuffer.append(tempName + ", ");
+                paramTypesTemp = paramTypesTemp.substring(param.length(),paramTypesTemp.length());
+                params++;
             }
-            TypeDescriptor typeDescriptor = TypeDescriptor.parse(param);
-            TypeDescriptorList.add(typeDescriptor);
-            String tempName = typeDescriptor.getName();
-            stringBuffer.append(tempName + " param" + params + ", ");
-            paramTypesTemp = paramTypesTemp.substring(param.length(),paramTypesTemp.length());
-            params++;
-        }
-        stringBuffer.deleteCharAt(stringBuffer.length()-1).deleteCharAt(stringBuffer.length()-1);
-        stringBuffer.append(")");
+            stringBuffer.deleteCharAt(stringBuffer.length()-1).deleteCharAt(stringBuffer.length()-1);
+            stringBuffer.append(")");
 
-        this.name = stringBuffer.toString();
-        this.paramTypes = TypeDescriptorList;
-        this.descriptor = descriptor;
+            this.name = stringBuffer.toString();
+            this.paramTypes = TypeDescriptorList;
+        }
     }
 
 

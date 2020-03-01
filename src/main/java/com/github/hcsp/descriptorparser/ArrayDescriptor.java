@@ -24,7 +24,7 @@ public class ArrayDescriptor implements TypeDescriptor {
         if (firstShowIndex == lastShowIndesx) {
             this.dimension = 1;
         } else {
-            this.dimension = lastShowIndesx - firstShowIndex;
+            this.dimension = (lastShowIndesx - firstShowIndex) + 1;
         }
 
         //拼接
@@ -40,7 +40,7 @@ public class ArrayDescriptor implements TypeDescriptor {
         }
         stringBuffer.append(rawType.getName());
 
-        for(int i = 0; i <= dimension; i++){
+        for(int i = 0; i < dimension; i++){
             stringBuffer.append("[]");
         }
         this.name = stringBuffer.toString();
