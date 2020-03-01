@@ -11,16 +11,6 @@ public class ReferenceDescriptor implements TypeDescriptor {
     private String descriptor;
 
     public ReferenceDescriptor(String descriptor) {
-        int start = 0;
-        int end = descriptor.length();
-        if (descriptor.startsWith("L")) {
-            start++;
-        }
-        if (descriptor.endsWith("$") || descriptor.endsWith(";")) {
-            end--;
-        }
-        fqcn = descriptor.substring(start, end).replace("/",".");
-
     }
 
     @Override

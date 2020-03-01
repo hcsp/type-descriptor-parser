@@ -1,7 +1,5 @@
 package com.github.hcsp.descriptorparser;
 
-import java.util.Arrays;
-
 /**
  * 代表原生类型的描述符
  */
@@ -22,32 +20,11 @@ public enum PrimitiveTypeDescriptor implements TypeDescriptor {
     }
 
     public static PrimitiveTypeDescriptor of(String descriptor) {
-        switch (descriptor) {
-            case "B":
-                return PrimitiveTypeDescriptor.BYTE;
-            case "C":
-                return PrimitiveTypeDescriptor.CHAR;
-            case "D":
-                return PrimitiveTypeDescriptor.DOUBLE;
-            case "F":
-                return PrimitiveTypeDescriptor.FLOAT;
-            case "I":
-                return PrimitiveTypeDescriptor.INT;
-            case "J":
-                return PrimitiveTypeDescriptor.LONG;
-            case "S":
-                return PrimitiveTypeDescriptor.SHORT;
-            case "Z":
-                return PrimitiveTypeDescriptor.BOOLEAN;
-            case "V":
-                return PrimitiveTypeDescriptor.VOID;
-            default:
-                throw new IllegalArgumentException("Invalid Primitive Type Descriptor");
-        }
+        return null;
     }
 
     public static boolean isPrimitive(String descriptor) {
-        return Arrays.asList("B", "C", "D", "F", "I", "J", "S", "Z", "V").contains(descriptor);
+        return false;
     }
 
     @Override
