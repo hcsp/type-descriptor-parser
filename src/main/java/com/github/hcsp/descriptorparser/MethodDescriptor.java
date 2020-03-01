@@ -19,40 +19,6 @@ public class MethodDescriptor implements TypeDescriptor {
     private String name;
 
     public MethodDescriptor(String descriptor) {
-        List<String> list = new ArrayList<>();
-        String name = null;
-        if (descriptor.startsWith("(")) {
-            descriptor = descriptor.substring(1);
-            while (!descriptor.equals("") && !descriptor.startsWith(")")) {
-                if (descriptor.startsWith("L")) {
-                    descriptor = descriptor.substring(1);
-                    list.add((descriptor.substring(0, descriptor.indexOf(";")).replace("/", ".")));
-                    descriptor = descriptor.substring(descriptor.indexOf(";") + 1, descriptor.length() - 1);
-                } else if (PrimitiveTypeDescriptor.isPrimitive(descriptor.substring(0, 1))) {
-                    if (descriptor.startsWith("V"))
-                        name = PrimitiveTypeDescriptor.of(descriptor.substring(0, 1)).getName();
-                    else {
-                        list.add(PrimitiveTypeDescriptor.of(descriptor.substring(0, 1)).getName());
-                    }
-                    descriptor = descriptor.substring(1);
-                }
-                if (descriptor.startsWith("[")) {
-                    list.add(new ArrayDescriptor(descriptor).getName());
-                    while (descriptor.startsWith("[") && !descriptor.startsWith("L")) {
-                        descriptor = descriptor.substring(1);
-                    }
-                    if (descriptor.startsWith("L")) {
-                        descriptor = descriptor.substring(descriptor.indexOf(";") + 1);
-                    }
-                    descriptor = descriptor.substring(1);
-                }
-            }
-            if (!descriptor.equals(""))
-                descriptor = descriptor.substring(1);
-        }
-        if (!descriptor.equals(""))
-            name = new ArrayDescriptor(descriptor).getName();
-        this.name = name + " (" + String.join(", ", list) + ")";
     }
 
 
