@@ -14,29 +14,8 @@ public class ArrayDescriptor implements TypeDescriptor {
     private int dimension;
     private TypeDescriptor rawType;
 
+    // [[Ljava/lang/Object;
     public ArrayDescriptor(String descriptor) {
-        this.descriptor = descriptor;
-        char[] split = descriptor.toCharArray();
-        for (char s : split) {
-            if ('[' == s) {
-                this.dimension += 1;
-            } else {
-                // 如果 不是 "[" 了，到 类型 了。
-                if ('L' == s) {
-                    String[] nameSplit = descriptor.split("" + s);
-                    ReferenceDescriptor referenceDescriptor = new ReferenceDescriptor("L" + nameSplit[1]);
-                    this.rawType = referenceDescriptor;
-                } else {
-                    PrimitiveTypeDescriptor parse = PrimitiveTypeDescriptor.of("" + s);
-                    this.rawType = parse;
-                }
-                break;
-            }
-        }
-        this.name = this.rawType.getName();
-        for (int i = 0; i < this.dimension; i++) {
-            this.name = this.name + "[]";
-        }
     }
 
     @Override
@@ -56,5 +35,4 @@ public class ArrayDescriptor implements TypeDescriptor {
     public String getDescriptor() {
         return descriptor;
     }
-
 }
