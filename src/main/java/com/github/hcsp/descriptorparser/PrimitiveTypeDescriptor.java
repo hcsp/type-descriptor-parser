@@ -1,8 +1,5 @@
 package com.github.hcsp.descriptorparser;
 
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Stream;
-
 /**
  * 代表原生类型的描述符
  */
@@ -23,15 +20,11 @@ public enum PrimitiveTypeDescriptor implements TypeDescriptor {
     }
 
     public static PrimitiveTypeDescriptor of(String descriptor) {
-        return Stream.of(PrimitiveTypeDescriptor.values()).filter(primitive ->
-            primitive.getDescriptor().equals(descriptor)
-        ).findFirst().get();
+        return null;
     }
 
     public static boolean isPrimitive(String descriptor) {
-       return Stream.of(PrimitiveTypeDescriptor.values()).anyMatch(primitive ->
-           primitive.getDescriptor().equals(descriptor)
-       );
+        return false;
     }
 
     @Override
@@ -42,9 +35,5 @@ public enum PrimitiveTypeDescriptor implements TypeDescriptor {
     @Override
     public String getDescriptor() {
         return descriptor;
-    }
-
-    public static void main(String[] args) {
-
     }
 }
