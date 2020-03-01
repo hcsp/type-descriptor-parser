@@ -29,8 +29,9 @@ public interface TypeDescriptor {
                 return new ReferenceDescriptor(descriptor);
             case '(' :
                 return new MethodDescriptor(descriptor);
+            default :
+                return PrimitiveTypeDescriptor.of(descriptor);
         }
-        return null;
     }
 }
 
