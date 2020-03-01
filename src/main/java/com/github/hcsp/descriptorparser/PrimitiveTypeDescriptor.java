@@ -1,11 +1,7 @@
 package com.github.hcsp.descriptorparser;
 
-import java.util.Arrays;
-
 /**
  * 代表原生类型的描述符
- *
- * @author athos
  */
 public enum PrimitiveTypeDescriptor implements TypeDescriptor {
     BYTE("B"),
@@ -17,18 +13,18 @@ public enum PrimitiveTypeDescriptor implements TypeDescriptor {
     SHORT("S"),
     BOOLEAN("Z"),
     VOID("V");
-    private final String descriptor;
+    private String descriptor;
 
     PrimitiveTypeDescriptor(String descriptor) {
         this.descriptor = descriptor;
     }
 
     public static PrimitiveTypeDescriptor of(String descriptor) {
-        return Arrays.stream(values()).filter(v -> v.getDescriptor().equals(descriptor)).findFirst().orElse(null);
+        return null;
     }
 
     public static boolean isPrimitive(String descriptor) {
-        return Arrays.stream(values()).anyMatch(v -> v.getDescriptor().equals(descriptor));
+        return false;
     }
 
     @Override

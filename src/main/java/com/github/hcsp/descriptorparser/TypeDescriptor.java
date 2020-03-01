@@ -17,21 +17,11 @@ public interface TypeDescriptor {
 
     /**
      * 解析一个描述符，根据其具体类型返回不同的子类
-     *
      * @param descriptor
      * @return PrimitiveTypeDescriptor/ReferenceDescriptor/MethodDescriptor/PrimitiveTypeDescriptor
      */
     static TypeDescriptor parse(String descriptor) {
-        if (descriptor.startsWith("L")) {
-            return new ReferenceDescriptor(descriptor);
-        } else if (descriptor.startsWith("(")) {
-            return new MethodDescriptor(descriptor);
-        } else if (descriptor.startsWith("[")) {
-            return new ArrayDescriptor(descriptor);
-        } else {
-            return PrimitiveTypeDescriptor.of(descriptor);
-        }
-
+        return null;
     }
 }
 
