@@ -43,6 +43,6 @@ Object m(int i, double d, Thread t) {...}
 
 -----
 注意！我们只允许你修改以下文件，对其他文件的修改会被拒绝：
-- [src/main/java/com/github/hcsp/descriptorparser](https://github.com/hcsp/type-descriptor-parser/blob/master/src/main/java/com/github/hcsp/descriptorparser)
+- [src/main/java/com/github/hcsp/descriptorparser/](https://github.com/hcsp/type-descriptor-parser/blob/master/src/main/java/com/github/hcsp/descriptorparser/)
 -----
 
