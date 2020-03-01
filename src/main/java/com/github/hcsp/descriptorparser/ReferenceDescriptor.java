@@ -11,6 +11,15 @@ public class ReferenceDescriptor implements TypeDescriptor {
     private String descriptor;
 
     public ReferenceDescriptor(String descriptor) {
+        char[] res=descriptor.trim().toCharArray();
+        for (int i = 0; i <res.length ;i++ ) {
+            if(res[i]=='/'){
+                res[i]='.';
+            }
+        }
+       fqcn=String.valueOf(res).substring(1,res.length-1);
+
+
     }
 
     @Override
