@@ -11,6 +11,10 @@ public class ReferenceDescriptor implements TypeDescriptor {
     private String descriptor;
 
     public ReferenceDescriptor(String descriptor) {
+        String substring = descriptor.substring(1, descriptor.length());
+        String fromName = substring.replace("/", ".");
+        this.fqcn = fromName.replaceAll(";", "");
+        this.descriptor = descriptor;
     }
 
     @Override
