@@ -1,5 +1,7 @@
 package com.github.hcsp.descriptorparser;
 
+import java.util.regex.Pattern;
+
 /**
  * 代表原生类型的描述符
  */
@@ -20,15 +22,28 @@ public enum PrimitiveTypeDescriptor implements TypeDescriptor {
     }
 
     public static PrimitiveTypeDescriptor of(String descriptor) {
+        for (PrimitiveTypeDescriptor primitiveTypeDescriptor : PrimitiveTypeDescriptor.values()) {
+            if(primitiveTypeDescriptor.getDescriptor().equalsIgnoreCase(descriptor)){
+                return primitiveTypeDescriptor;
+            }
+        }
         return null;
     }
 
     public static boolean isPrimitive(String descriptor) {
-        return false;
+
+        String regex = "[B,C,D,F,I,J,S,Z,V]";
+
+        if(descriptor.length() == 1 && Pattern.matches(regex, descriptor)){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @Override
     public String getName() {
+
         return name().toLowerCase();
     }
 

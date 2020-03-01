@@ -16,10 +16,39 @@ public class ArrayDescriptor implements TypeDescriptor {
 
     // [[Ljava/lang/Object;
     public ArrayDescriptor(String descriptor) {
+        this.descriptor = descriptor;
+        //第一次出现位置
+        int firstShowIndex = descriptor.indexOf("[");
+        //最后一次出现位置
+        int lastShowIndesx = descriptor.lastIndexOf("[");
+        if (firstShowIndex == lastShowIndesx) {
+            this.dimension = 1;
+        } else {
+            this.dimension = lastShowIndesx - firstShowIndex;
+        }
+
+        //拼接
+        StringBuffer stringBuffer = new StringBuffer();
+
+        String temp = descriptor.replace("[","");
+        //原生类型
+        if(temp.length() == 1){
+            this.rawType = PrimitiveTypeDescriptor.of(temp);
+        }else{
+            //引用类型
+            this.rawType = new ReferenceDescriptor(temp);
+        }
+        stringBuffer.append(rawType.getName());
+
+        for(int i = 0; i <= dimension; i++){
+            stringBuffer.append("[]");
+        }
+        this.name = stringBuffer.toString();
     }
 
     @Override
     public String getName() {
+
         return name;
     }
 
