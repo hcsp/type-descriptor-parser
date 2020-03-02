@@ -11,6 +11,13 @@ public class ReferenceDescriptor implements TypeDescriptor {
     private String descriptor;
 
     public ReferenceDescriptor(String descriptor) {
+        this.descriptor = descriptor;
+        this.fqcn = descriptor.replaceAll("[L;]", "")
+                .replaceAll("/", ".");
+    }
+
+    public static boolean isReference(String descriptor) {
+        return descriptor.startsWith("L");
     }
 
     @Override
