@@ -1,7 +1,5 @@
 package com.github.hcsp.descriptorparser;
 
-import com.github.hcsp.descriptorparser.util.TypeDescriptorParser;
-
 /**
  * 代表原生类型的描述符
  */
@@ -22,33 +20,11 @@ public enum PrimitiveTypeDescriptor implements TypeDescriptor {
     }
 
     public static PrimitiveTypeDescriptor of(String descriptor) {
-        switch (descriptor) {
-            case "B":
-                return BYTE;
-            case "C":
-                return CHAR;
-            case "D":
-                return DOUBLE;
-            case "F":
-                return FLOAT;
-            case "I":
-                return INT;
-            case "J":
-                return LONG;
-            case "S":
-                return SHORT;
-            case "Z":
-                return BOOLEAN;
-            case "V":
-                return VOID;
-            default:
-                throw new IllegalArgumentException();
-        }
-
+        return null;
     }
 
     public static boolean isPrimitive(String descriptor) {
-        return TypeDescriptorParser.isPrimitive(descriptor);
+        return false;
     }
 
     @Override
