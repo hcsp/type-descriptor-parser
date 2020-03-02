@@ -42,16 +42,5 @@ public class DescriptorTest {
                 "int ()",
                 new MethodDescriptor("()I").getName()
         );
-
-        Assertions.assertEquals(
-                /**
-                 * 之前的测试在参数中，java.lang.Thread都是放在最后一位，
-                 * 这样会有漏网之鱼，
-                 * 如果把下面这个例子输错了也可以通过测试
-                 * 我是通过substring字符串来做的，如果把java.lang.Thread之后的字符串读取错误也可以通过之前的测试
-                 * */
-                "void (double[], java.lang.Thread, int[], byte[][], float)",
-                new MethodDescriptor("([DLjava/lang/Thread[I[[BF;)V").getName()
-        );
     }
 }
