@@ -22,10 +22,16 @@ public class MethodDescriptor implements TypeDescriptor {
 
     public MethodDescriptor(String descriptor) {
         this.descriptor = descriptor;
+
         List<TypeDescriptor> types = getTypeDescriptors(descriptor);
+
         this.paramTypes = types.subList(0, types.size() - 1);
         this.returnType = types.get(types.size() - 1);
         this.name = String.format("%s (%s)", returnType.getName(), getFullParamName());
+    }
+
+    public static boolean isMethod(String descriptor) {
+        return descriptor.startsWith("(");
     }
 
     private List<TypeDescriptor> getTypeDescriptors(String descriptor) {
@@ -33,7 +39,6 @@ public class MethodDescriptor implements TypeDescriptor {
         List<TypeDescriptor> types = new ArrayList<>();
         while (matcher.find()) {
             types.add(TypeDescriptorUtil.getTypeDescriptor(matcher.group()));
-
         }
         return types;
     }

@@ -10,6 +10,10 @@ class TypeDescriptorUtil {
             return new ReferenceDescriptor(descriptor);
         }
 
+        if (MethodDescriptor.isMethod(descriptor)) {
+            return new MethodDescriptor(descriptor);
+        }
+
         return new ArrayDescriptor(descriptor);
 
     }
