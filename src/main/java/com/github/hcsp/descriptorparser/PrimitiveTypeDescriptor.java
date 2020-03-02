@@ -20,16 +20,11 @@ public enum PrimitiveTypeDescriptor implements TypeDescriptor {
     }
 
     public static PrimitiveTypeDescriptor of(String descriptor) {
-        for (PrimitiveTypeDescriptor primitiveTypeDescriptor : PrimitiveTypeDescriptor.values()) {
-            if (descriptor.equals(primitiveTypeDescriptor.getDescriptor())) {
-                return primitiveTypeDescriptor;
-            }
-        }
         return null;
     }
 
     public static boolean isPrimitive(String descriptor) {
-        return of(descriptor) != null;
+        return false;
     }
 
     @Override
