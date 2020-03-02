@@ -1,7 +1,5 @@
 package com.github.hcsp.descriptorparser;
 
-import java.util.stream.Stream;
-
 /**
  * 代表原生类型的描述符
  */
@@ -22,15 +20,11 @@ public enum PrimitiveTypeDescriptor implements TypeDescriptor {
     }
 
     public static PrimitiveTypeDescriptor of(String descriptor) {
-        return Stream.of(PrimitiveTypeDescriptor.values())
-                .filter(x -> x.getDescriptor().equals(descriptor))
-                .findFirst()
-                .orElseThrow(RuntimeException::new);
+        return null;
     }
 
     public static boolean isPrimitive(String descriptor) {
-        return Stream.of(PrimitiveTypeDescriptor.values())
-                .anyMatch(x -> x.getDescriptor().equals(descriptor));
+        return false;
     }
 
     @Override
