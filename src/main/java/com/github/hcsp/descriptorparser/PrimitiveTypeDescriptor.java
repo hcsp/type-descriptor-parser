@@ -17,13 +17,16 @@ public enum PrimitiveTypeDescriptor implements TypeDescriptor {
     VOID("V");
     private String descriptor;
 
+    //原生类型正则表达式
+    public static String regex = "[BCDFIJSZV]";
+
     PrimitiveTypeDescriptor(String descriptor) {
         this.descriptor = descriptor;
     }
 
     public static PrimitiveTypeDescriptor of(String descriptor) {
         for (PrimitiveTypeDescriptor primitiveTypeDescriptor : PrimitiveTypeDescriptor.values()) {
-            if(primitiveTypeDescriptor.getDescriptor().equalsIgnoreCase(descriptor)){
+            if (primitiveTypeDescriptor.getDescriptor().equalsIgnoreCase(descriptor)) {
                 return primitiveTypeDescriptor;
             }
         }
@@ -31,14 +34,7 @@ public enum PrimitiveTypeDescriptor implements TypeDescriptor {
     }
 
     public static boolean isPrimitive(String descriptor) {
-
-        String regex = "[B,C,D,F,I,J,S,Z,V]";
-
-        if(descriptor.length() == 1 && Pattern.matches(regex, descriptor)){
-            return true;
-        }else{
-            return false;
-        }
+        return descriptor.length() == 1 && Pattern.matches(regex, descriptor);
     }
 
     @Override

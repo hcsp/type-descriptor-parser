@@ -17,8 +17,16 @@ public interface TypeDescriptor {
      */
     String getDescriptor();
 
+    //方法类型正则表达式
+    public static String methodRegex = "^\\(.*";
+    //方法类型正则表达式
+    public static String referenceRegex = "^L.*";
+    //方法类型正则表达式
+    public static String arrayRegex = "^\\[.*";
+
     /**
      * 解析一个描述符，根据其具体类型返回不同的子类
+     *
      * @param descriptor
      * @return PrimitiveTypeDescriptor/ReferenceDescriptor/MethodDescriptor/PrimitiveTypeDescriptor
      */
@@ -31,19 +39,19 @@ public interface TypeDescriptor {
             4.引用类型   java.lang.String表示为Ljava/lang/String;
          */
 
-        if (Pattern.matches("^\\(.*", descriptor)) {
+        if (Pattern.matches(methodRegex, descriptor)) {
             //方法类型
             return new MethodDescriptor(descriptor);
 
-        } else if(Pattern.matches("^L.*", descriptor)) {
+        } else if (Pattern.matches(referenceRegex, descriptor)) {
             //引用类型
             return new ReferenceDescriptor(descriptor);
 
-        } else if (Pattern.matches("^\\[.*", descriptor)) {
+        } else if (Pattern.matches(arrayRegex, descriptor)) {
             //数组类型
             return new ArrayDescriptor(descriptor);
 
-        }else if (PrimitiveTypeDescriptor.isPrimitive(descriptor)) {
+        } else if (PrimitiveTypeDescriptor.isPrimitive(descriptor)) {
             //原生类型
             return PrimitiveTypeDescriptor.of(descriptor);
 

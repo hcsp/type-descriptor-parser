@@ -30,17 +30,12 @@ public class ArrayDescriptor implements TypeDescriptor {
         //拼接
         StringBuffer stringBuffer = new StringBuffer();
 
-        String temp = descriptor.replace("[","");
-        //原生类型
-        if(temp.length() == 1){
-            this.rawType = PrimitiveTypeDescriptor.of(temp);
-        }else{
-            //引用类型
-            this.rawType = new ReferenceDescriptor(temp);
-        }
+        String temp = descriptor.replace("[", "");
+
+        this.rawType = TypeDescriptor.parse(temp);
         stringBuffer.append(rawType.getName());
 
-        for(int i = 0; i < dimension; i++){
+        for (int i = 0; i < dimension; i++) {
             stringBuffer.append("[]");
         }
         this.name = stringBuffer.toString();
