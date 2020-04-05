@@ -11,6 +11,7 @@ public class ReferenceDescriptor implements TypeDescriptor {
     private String descriptor;
 
     public ReferenceDescriptor(String descriptor) {
+        fqcn = DescriptorUtil.getClassName(descriptor);
     }
 
     @Override
