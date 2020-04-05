@@ -16,16 +16,6 @@ public class ArrayDescriptor implements TypeDescriptor {
 
     // [[Ljava/lang/Object;
     public ArrayDescriptor(String descriptor) {
-        while (descriptor.startsWith("[")) {
-            dimension++;
-            descriptor = descriptor.replaceFirst("\\[", "");
-        }
-        descriptor = DescriptorUtil.getClassName(descriptor);
-        StringBuilder descriptorBuilder = new StringBuilder(descriptor);
-        for (int i = 0; i < dimension; i++) {
-            descriptorBuilder.append("[]");
-        }
-        name = descriptorBuilder.toString().replaceFirst(";", "");
     }
 
     @Override

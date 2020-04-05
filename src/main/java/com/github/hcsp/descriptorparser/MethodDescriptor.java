@@ -2,6 +2,9 @@ package com.github.hcsp.descriptorparser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 /**
  * 代表方法的描述符，如给定方法描述符(IDLjava/lang/Thread;)Ljava/lang/Object;
@@ -16,33 +19,6 @@ public class MethodDescriptor implements TypeDescriptor {
     private String name;
 
     public MethodDescriptor(String descriptor) {
-        descriptor = descriptor.replace("(", "");
-        final String[] descriptorToTwoPart = descriptor.split("\\)");
-        String param = descriptorToTwoPart[0];
-        String returns = descriptorToTwoPart[1];
-        List<String> params = new ArrayList<>();
-        for (int i = 0; i < param.length(); ) {
-            String handlingString = "";
-            char handlingChar;
-            do {
-                handlingChar = param.charAt(i++);
-                if (handlingChar == 'L') {
-                    int indexOfSeparator = param.substring(i - 1).indexOf(";");
-                    handlingString += param.substring(i - 1, indexOfSeparator + i - 1);
-                    i += indexOfSeparator;
-                    break;
-                }
-                handlingString += handlingChar;
-            } while (handlingChar == '[');
-            if (handlingString.startsWith("[")) {
-                params.add(new ArrayDescriptor(handlingString).getName());
-                continue;
-            }
-            params.add(DescriptorUtil.getClassName(handlingString));
-
-        }
-        returns = DescriptorUtil.getClassName(returns);
-        name = returns + " " + params.toString().replaceFirst("\\[", "\\(").substring(0, params.toString().length() - 1) + ")";
     }
 
 
