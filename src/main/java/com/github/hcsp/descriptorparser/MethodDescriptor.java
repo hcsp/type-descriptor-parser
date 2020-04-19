@@ -1,7 +1,6 @@
 package com.github.hcsp.descriptorparser;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,43 +19,15 @@ public class MethodDescriptor implements TypeDescriptor {
     private String name;
 
     public MethodDescriptor(String descriptor) {
-        this.descriptor = descriptor;
-        this.returnType = compileReturnType();
-        this.paramTypes = compileParamTypes();
-        this.name = compileName();
-    }
-
-    private String compileName() {
-        return this.returnType.getName() + " (" + String.join(", ", this.paramTypes.stream().map(item -> item.getName()).collect(Collectors.toList())) + ")";
-    }
-
-
-    public List<TypeDescriptor> compileParamTypes() {
-        List<TypeDescriptor> paramList = new LinkedList<>();
-        Matcher matcher = Pattern.compile("((\\[*([BCDFIJSZV]|(L[\\w\\/]*;))))(?=((\\[*([BCDFIJSZV]|(L[\\w\\/]*;))))*\\))").matcher(this.descriptor);
-        while (matcher.find()) {
-            String param = matcher.group(0);
-            paramList.add(new ArrayDescriptor(param));
-        }
-        return paramList;
-    }
-
-    private TypeDescriptor compileReturnType() {
-        Matcher matcher = Pattern.compile("\\)(L.*;)").matcher(this.descriptor);
-        boolean isReference = matcher.find();
-        if (isReference) {
-            return new ReferenceDescriptor(matcher.group(1));
-        }
-        return PrimitiveTypeDescriptor.of(descriptor.substring(descriptor.length() - 1));
     }
 
 
     public List<TypeDescriptor> getParamTypes() {
-        return this.paramTypes;
+        return paramTypes;
     }
 
     public TypeDescriptor getReturnType() {
-        return this.returnType;
+        return returnType;
     }
 
     @Override

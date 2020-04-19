@@ -1,8 +1,5 @@
 package com.github.hcsp.descriptorparser;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * 数组类型的描述符，如输入[[Ljava/lang/Object;
  * 得到的name是java.lang.Object[][]
@@ -19,25 +16,6 @@ public class ArrayDescriptor implements TypeDescriptor {
 
     // [[Ljava/lang/Object;
     public ArrayDescriptor(String descriptor) {
-        this.descriptor = descriptor;
-        Matcher dimensionMather = Pattern.compile("(^[\\[]*)").matcher(descriptor);
-        while (dimensionMather.find()) {
-            this.dimension = dimensionMather.group(0).length();
-        }
-        this.rawType = getRawTypeFromDescriptor(descriptor);
-        this.name = this.getRawType().getName();
-        for (int i = 0; i < this.getDimension(); i++) {
-            this.name += "[]";
-        }
-    }
-
-    public TypeDescriptor getRawTypeFromDescriptor(String descriptor) {
-        Matcher matcher = Pattern.compile("^[\\[]*(L.*;)").matcher(descriptor);
-        boolean isReference = matcher.find();
-        if (isReference) {
-            return new ReferenceDescriptor(matcher.group(1));
-        }
-        return PrimitiveTypeDescriptor.of(descriptor.substring(descriptor.length() - 1));
     }
 
     @Override
