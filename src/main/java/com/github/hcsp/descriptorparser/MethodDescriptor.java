@@ -18,7 +18,7 @@ public class MethodDescriptor implements TypeDescriptor {
     private String name;
 
     private static final Pattern methodPattern = Pattern.compile("\\((.*?)\\)(.+)");
-    private static final Pattern descriptorPatten = Pattern.compile("(\\[*(?:[BCDFIJSZV]|L[\\w/]+;))");
+    private static final Pattern descriptorPattern = Pattern.compile("(\\[*(?:[BCDFIJSZV]|L[\\w/]+;))");
 
     public MethodDescriptor(String descriptor) {
         this.descriptor = descriptor;
@@ -73,7 +73,7 @@ public class MethodDescriptor implements TypeDescriptor {
     }
 
     private void parseParameters(String descriptor) {
-        Matcher matcher = descriptorPatten.matcher(descriptor);
+        Matcher matcher = descriptorPattern.matcher(descriptor);
         while (matcher.find()) {
             String result = matcher.group(1);
             if (PrimitiveTypeDescriptor.isPrimitive(result)) {
@@ -87,7 +87,7 @@ public class MethodDescriptor implements TypeDescriptor {
     }
 
     private void parseReturnValue(String descriptor) {
-        Matcher matcher = descriptorPatten.matcher(descriptor);
+        Matcher matcher = descriptorPattern.matcher(descriptor);
         if (matcher.find()) {
             String result = matcher.group(1);
             if (PrimitiveTypeDescriptor.isPrimitive(result)) {

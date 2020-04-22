@@ -16,10 +16,11 @@ public class ArrayDescriptor implements TypeDescriptor {
     private String descriptor;
     private int dimension;
     private TypeDescriptor rawType;
-    private static final Pattern descriptorPatten = Pattern.compile("(\\[+)([BCDFIJSZ]|L([\\w/]+);)");
+    private static final Pattern descriptorPattern = Pattern.compile("(\\[+)([BCDFIJSZ]|L([\\w/]+);)");
 
     // [[Ljava/lang/Object;
     public ArrayDescriptor(String descriptor) {
+        this.descriptor = descriptor;
         this.parseDescriptor(descriptor);
     }
 
@@ -28,7 +29,7 @@ public class ArrayDescriptor implements TypeDescriptor {
     }
 
     public static boolean isArray(String descriptor) {
-        return descriptorPatten.matcher(descriptor).find();
+        return descriptorPattern.matcher(descriptor).find();
     }
 
     @Override
@@ -50,12 +51,11 @@ public class ArrayDescriptor implements TypeDescriptor {
     }
 
     private void parseDescriptor(String descriptor) {
-        Matcher matcher = descriptorPatten.matcher(descriptor);
+        Matcher matcher = descriptorPattern.matcher(descriptor);
         while (matcher.find()) {
             String bracket = matcher.group(1);
             String desc = matcher.group(2);
             this.dimension = bracket.length();
-            this.descriptor = bracket + desc;
             StringBuilder sb = new StringBuilder();
 
             String classpath = matcher.group(3);
