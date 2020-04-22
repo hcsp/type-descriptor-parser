@@ -1,5 +1,8 @@
 package com.github.hcsp.descriptorparser;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public interface TypeDescriptor {
     /**
      * 返回人类可读的类型名，如int或者java.lang.Object[]
@@ -21,6 +24,15 @@ public interface TypeDescriptor {
      * @return PrimitiveTypeDescriptor/ReferenceDescriptor/MethodDescriptor/PrimitiveTypeDescriptor
      */
     static TypeDescriptor parse(String descriptor) {
+        if (PrimitiveTypeDescriptor.isPrimitive(descriptor)) {
+            return PrimitiveTypeDescriptor.of(descriptor);
+        } else if (ReferenceDescriptor.isReference(descriptor)) {
+            return ReferenceDescriptor.of(descriptor);
+        } else if (ArrayDescriptor.isArray(descriptor)) {
+            return ArrayDescriptor.of(descriptor);
+        } else if (MethodDescriptor.isMethod(descriptor)) {
+            return MethodDescriptor.of(descriptor);
+        }
         return null;
     }
 }
