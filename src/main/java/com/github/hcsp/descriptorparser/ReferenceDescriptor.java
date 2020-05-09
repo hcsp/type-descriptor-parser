@@ -11,6 +11,17 @@ public class ReferenceDescriptor implements TypeDescriptor {
     private String descriptor;
 
     public ReferenceDescriptor(String descriptor) {
+        int dimension = TypeDescriptor.countRepeat(descriptor, "[");
+        String typeFlag = descriptor.replace("[", "").substring(0, 1);
+        if (typeFlag.equals("L")) {
+            fqcn = descriptor
+                    .replace("[", "")
+                    .replace("L", "")
+                    .replace(";", "")
+                    .replaceAll("/", ".");
+        } else {
+            fqcn = TypeDescriptor.getFullType(typeFlag);
+        }
     }
 
     @Override
