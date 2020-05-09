@@ -1,9 +1,5 @@
 package com.github.hcsp.descriptorparser;
 
-import static com.github.hcsp.descriptorparser.TypeDescriptor.*;
-import static com.github.hcsp.descriptorparser.TypeDescriptor.buildEnd;
-import static com.github.hcsp.descriptorparser.TypeDescriptor.countRepeat;
-
 /**
  * 数组类型的描述符，如输入[[Ljava/lang/Object;
  * 得到的name是java.lang.Object[][]
@@ -20,19 +16,6 @@ public class ArrayDescriptor implements TypeDescriptor {
 
     // [[Ljava/lang/Object;
     public ArrayDescriptor(String descriptor) {
-        int dimension = countRepeat(descriptor, "[");
-        String end = buildEnd(dimension);
-        String typeFlag = descriptor.replace("[", "").substring(0, 1);
-        if (typeFlag.equals("L")) {
-            name = descriptor
-                    .replace("[", "")
-                    .replace("L", "")
-                    .replace(";", "")
-                    .replaceAll("/", ".")
-                    + end;
-        } else {
-            name = getFullType(typeFlag) + end;
-        }
     }
 
     @Override
