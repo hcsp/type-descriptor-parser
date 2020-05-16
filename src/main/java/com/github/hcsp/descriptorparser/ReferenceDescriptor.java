@@ -11,6 +11,8 @@ public class ReferenceDescriptor implements TypeDescriptor {
     private String descriptor;
 
     public ReferenceDescriptor(String descriptor) {
+        this.descriptor = descriptor;
+        fqcn = String.join(".", descriptor.substring(1, descriptor.length() - 1).split("\\/"));
     }
 
     @Override
