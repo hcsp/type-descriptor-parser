@@ -17,14 +17,13 @@ public class MethodDescriptor implements TypeDescriptor {
     private TypeDescriptor returnType;
     private String descriptor;
     private String name;
-    public static final String METHOD_REGEX = "^\\(((?:\\[*\\w)*)((?:\\[*L.+)*)\\)(.+)";
-    public static final String ARRAY_REGEX = "\\[*\\w";
-    public static final String REFERENCE_REGEX = "\\[*L(.+)";
+    public static final Pattern ARRAY_REGEX_PATTERN = Pattern.compile("\\[*\\w");
+    public static final Pattern REFERENCE_REGEX_PATTERN = Pattern.compile("\\[*L(.+)");
+    public static final Pattern METHOD_REGEX_PATTERN = Pattern.compile("^\\(((?:\\[*\\w)*)((?:\\[*L.+)*)\\)(.+)");
 
     public MethodDescriptor(String descriptor) {
         this.descriptor = descriptor;
-        Pattern pattern = Pattern.compile(METHOD_REGEX);
-        Matcher matcher = pattern.matcher(descriptor);
+        Matcher matcher = METHOD_REGEX_PATTERN.matcher(descriptor);
         if (matcher.find()) {
             String primitiveParamTypes = matcher.group(1);
             String referenceParamType = matcher.group(2);
@@ -40,22 +39,20 @@ public class MethodDescriptor implements TypeDescriptor {
     }
 
     private void dealWithParams(String primitiveParamTypes, String referenceParamType) {
-        if (primitiveParamTypes.equals("") || referenceParamType.equals("")) {
+        if ("".equals(primitiveParamTypes) || "".equals(referenceParamType)) {
             return;
         }
-        Pattern pattern = Pattern.compile(ARRAY_REGEX);
-        Matcher matcher = pattern.matcher(primitiveParamTypes);
+        Matcher matcher = ARRAY_REGEX_PATTERN.matcher(primitiveParamTypes);
         while (matcher.find()) {
-            dealWithPrimitiveTypeOrNot(matcher.group(0),true);
+            dealWithPrimitiveTypeOrNot(matcher.group(0), true);
         }
-        Pattern pattern2 = Pattern.compile(REFERENCE_REGEX);
-        Matcher matcher2 = pattern2.matcher(referenceParamType);
+        Matcher matcher2 = REFERENCE_REGEX_PATTERN.matcher(referenceParamType);
         while (matcher2.find()) {
-            dealWithPrimitiveTypeOrNot(matcher2.group(0),false);
+            dealWithPrimitiveTypeOrNot(matcher2.group(0), false);
         }
     }
 
-    private void dealWithPrimitiveTypeOrNot(String type,boolean isPrimitive) {
+    private void dealWithPrimitiveTypeOrNot(String type, boolean isPrimitive) {
         if (type.startsWith("[")) {
             paramTypes.add(new ArrayDescriptor(type));
         } else {
