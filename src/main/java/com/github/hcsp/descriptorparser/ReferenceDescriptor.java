@@ -12,7 +12,7 @@ public class ReferenceDescriptor implements TypeDescriptor {
 
     public ReferenceDescriptor(String descriptor) {
         this.descriptor = descriptor;
-        this.fqcn = descriptor.substring(1).replaceAll("/", "\\.").replaceAll(";","");
+        this.fqcn = descriptor.substring(1).replaceAll("/", "\\.").replaceAll(";", "");
     }
 
     @Override

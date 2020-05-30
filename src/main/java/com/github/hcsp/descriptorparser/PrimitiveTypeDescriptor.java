@@ -35,7 +35,7 @@ public enum PrimitiveTypeDescriptor implements TypeDescriptor {
     }
 
     public static boolean isPrimitive(String descriptor) {
-        return of(descriptor)!=null;
+        return of(descriptor) != null;
     }
 
     @Override
