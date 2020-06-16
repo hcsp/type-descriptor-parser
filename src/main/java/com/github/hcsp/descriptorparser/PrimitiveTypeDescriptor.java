@@ -1,7 +1,5 @@
 package com.github.hcsp.descriptorparser;
 
-import java.util.regex.Pattern;
-
 /**
  * 代表原生类型的描述符
  */
@@ -17,23 +15,16 @@ public enum PrimitiveTypeDescriptor implements TypeDescriptor {
     VOID("V");
     private String descriptor;
 
-    private static final Pattern PATTERN = Pattern.compile("^[BCDFIJSZV]$");
-
     PrimitiveTypeDescriptor(String descriptor) {
         this.descriptor = descriptor;
     }
 
     public static PrimitiveTypeDescriptor of(String descriptor) {
-        for (PrimitiveTypeDescriptor value : PrimitiveTypeDescriptor.values()) {
-            if (value.getDescriptor().equals(descriptor)) {
-                return value;
-            }
-        }
         return null;
     }
 
     public static boolean isPrimitive(String descriptor) {
-        return PATTERN.matcher(descriptor).find();
+        return false;
     }
 
     @Override
