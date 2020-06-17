@@ -1,5 +1,7 @@
 package com.github.hcsp.descriptorparser;
 
+import java.util.HashMap;
+
 /**
  * 数组类型的描述符，如输入[[Ljava/lang/Object;
  * 得到的name是java.lang.Object[][]
@@ -14,8 +16,31 @@ public class ArrayDescriptor implements TypeDescriptor {
     private int dimension;
     private TypeDescriptor rawType;
 
-    // [[Ljava/lang/Object;
+    /**
+     * 思路
+     * 1. 解析出几维数组
+     * 2. 解析出数组之后的数据类型
+     * 3. 将数据类型转换格式
+     * 4. 拼接
+     * @param descriptor
+     */
     public ArrayDescriptor(String descriptor) {
+        this.descriptor = descriptor;
+        String fullName = null;
+        StringBuilder builder = new StringBuilder();
+        //获取数组维度
+        dimension = descriptor.lastIndexOf('[') + 1;
+        //获取数据类型
+        String type = String.valueOf(descriptor.charAt(dimension));
+        //转换为完全限定名
+        HashMap fqcn = DescriptorUtils.getFqcnByDataType(0, type, descriptor);
+
+        builder.append(fqcn.get("fqcn"));
+        for (int x = 0; x < dimension; x++){
+            builder.append("[]");
+        }
+
+        this.name = builder.toString();
     }
 
     @Override
