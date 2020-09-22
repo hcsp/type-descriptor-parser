@@ -1,5 +1,6 @@
 package com.github.hcsp.descriptorparser;
 
+
 /**
  * 代表原生类型的描述符
  */
@@ -20,11 +21,16 @@ public enum PrimitiveTypeDescriptor implements TypeDescriptor {
     }
 
     public static PrimitiveTypeDescriptor of(String descriptor) {
+        for (PrimitiveTypeDescriptor primitiveTypeDescriptor : PrimitiveTypeDescriptor.values()) {
+            if (descriptor.equals(primitiveTypeDescriptor.getDescriptor())) {
+                return primitiveTypeDescriptor;
+            }
+        }
         return null;
     }
 
     public static boolean isPrimitive(String descriptor) {
-        return false;
+        return of(descriptor) != null;
     }
 
     @Override
