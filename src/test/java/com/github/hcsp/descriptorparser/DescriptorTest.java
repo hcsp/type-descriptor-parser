@@ -7,6 +7,7 @@ public class DescriptorTest {
 
     @Test
     public void primitiveDescriptorTest() {
+        PrimitiveTypeDescriptor[] values = PrimitiveTypeDescriptor.values();
         for (PrimitiveTypeDescriptor descriptor : PrimitiveTypeDescriptor.values()) {
             Assertions.assertEquals(PrimitiveTypeDescriptor.of(descriptor.getDescriptor()), descriptor);
             Assertions.assertTrue(PrimitiveTypeDescriptor.isPrimitive(descriptor.getDescriptor()));

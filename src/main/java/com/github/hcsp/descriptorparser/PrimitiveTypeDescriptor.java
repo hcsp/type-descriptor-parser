@@ -20,10 +20,21 @@ public enum PrimitiveTypeDescriptor implements TypeDescriptor {
     }
 
     public static PrimitiveTypeDescriptor of(String descriptor) {
+        for (PrimitiveTypeDescriptor descriptor2 : PrimitiveTypeDescriptor.values()) {
+            if (descriptor.equals(descriptor2.getDescriptor())) {
+                return descriptor2;
+            }
+        }
         return null;
     }
 
     public static boolean isPrimitive(String descriptor) {
+        // stream find some ?
+        for (PrimitiveTypeDescriptor descriptor2 : PrimitiveTypeDescriptor.values()) {
+            if (descriptor.equals(descriptor2.getDescriptor())) {
+                return true;
+            }
+        }
         return false;
     }
 
