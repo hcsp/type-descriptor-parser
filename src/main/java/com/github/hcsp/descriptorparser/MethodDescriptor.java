@@ -17,28 +17,10 @@ public class MethodDescriptor implements TypeDescriptor {
     private TypeDescriptor returnType;
     private String descriptor;
     private String name;
-    private static final String METHOD_REGEX = "^\\((?<paramTypes>.*)\\)(?<returnType>.*)";
-    private static final Pattern METHOD_PATTERN = Pattern.compile(METHOD_REGEX);
 
     public MethodDescriptor(String descriptor) {
-        Matcher matcher = METHOD_PATTERN.matcher(descriptor);
-        while (matcher.find()) {
-            String paramTypes = matcher.group("paramTypes");
-            String returnType = matcher.group("returnType");
-            this.paramTypes = TypeFly.ofList(paramTypes);
-            this.returnType = TypeFly.of(returnType);
-            this.descriptor = descriptor;
-            this.name = this.returnType.getName() + " (" + this.paramTypes.stream().map(TypeDescriptor::getName).collect(Collectors.joining(", ")) + ")";
-        }
     }
 
-
-    public static void main(String[] args) {
-        String descriptor = "(IDLjava/lang/Thread;)Ljava/lang/Object;";
-        MethodDescriptor methodDescriptor = new MethodDescriptor(descriptor);
-        System.out.println(methodDescriptor.getName());
-        System.out.println();
-    }
 
     public List<TypeDescriptor> getParamTypes() {
         return paramTypes;
