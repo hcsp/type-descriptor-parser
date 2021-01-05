@@ -17,6 +17,7 @@ public interface TypeDescriptor {
 
     /**
      * 解析一个描述符，根据其具体类型返回不同的子类
+     *
      * @param descriptor
      * @return PrimitiveTypeDescriptor/ReferenceDescriptor/MethodDescriptor/PrimitiveTypeDescriptor
      */
