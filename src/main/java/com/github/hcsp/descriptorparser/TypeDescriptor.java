@@ -1,7 +1,5 @@
 package com.github.hcsp.descriptorparser;
 
-import java.util.Arrays;
-
 public interface TypeDescriptor {
     /**
      * 返回人类可读的类型名，如int或者java.lang.Object[]
