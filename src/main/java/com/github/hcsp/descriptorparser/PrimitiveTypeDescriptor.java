@@ -20,11 +20,17 @@ public enum PrimitiveTypeDescriptor implements TypeDescriptor {
     }
 
     public static PrimitiveTypeDescriptor of(String descriptor) {
+        String s = descriptor.toUpperCase();
+        for (PrimitiveTypeDescriptor primitiveTypeDescriptor : PrimitiveTypeDescriptor.values()) {
+            if (primitiveTypeDescriptor.getDescriptor().equals(s)) {
+                return primitiveTypeDescriptor;
+            }
+        }
         return null;
     }
 
     public static boolean isPrimitive(String descriptor) {
-        return false;
+        return of(descriptor) != null;
     }
 
     @Override
@@ -36,4 +42,5 @@ public enum PrimitiveTypeDescriptor implements TypeDescriptor {
     public String getDescriptor() {
         return descriptor;
     }
+
 }
