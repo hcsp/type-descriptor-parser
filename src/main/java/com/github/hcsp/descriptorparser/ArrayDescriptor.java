@@ -1,5 +1,8 @@
 package com.github.hcsp.descriptorparser;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * 数组类型的描述符，如输入[[Ljava/lang/Object;
  * 得到的name是java.lang.Object[][]
@@ -16,6 +19,13 @@ public class ArrayDescriptor implements TypeDescriptor {
 
     // [[Ljava/lang/Object;
     public ArrayDescriptor(String descriptor) {
+        this.descriptor = descriptor;
+
+        String[] splits = descriptor.split("\\[");
+        this.dimension = splits.length - 1;
+        this.rawType = TypeDescriptor.parse(splits[splits.length - 1]);
+        this.name = this.rawType.getName() +
+                Stream.generate(() -> "[]").limit(dimension).collect(Collectors.joining());
     }
 
     @Override
