@@ -17,10 +17,50 @@ public class MethodDescriptor implements TypeDescriptor {
     private TypeDescriptor returnType;
     private String descriptor;
     private String name;
+    private final Pattern pattern1 = Pattern.compile("\\((.*?)\\)(.*)");
+    private final Pattern pattern2 = Pattern.compile("(\\[*[BCDFIJSZV]|\\[*L.*)");
 
     public MethodDescriptor(String descriptor) {
+        this.descriptor = descriptor;
+        Matcher matcher = pattern1.matcher(descriptor);
+        if (matcher.find()) {
+            String param = matcher.group(1);
+            setParamTypes(param);
+
+            String returnValue = matcher.group(2);
+            setReturnType(returnValue);
+        }
+        String params = paramTypes.stream().map(TypeDescriptor::getName).collect(Collectors.joining(", "));
+        name = returnType.getName() + " (" + params + ")";
     }
 
+    private void setParamTypes(String param) {
+        Matcher matcher = pattern2.matcher(param);
+        while (matcher.find()) {
+            String p = matcher.group();
+            if (p.startsWith("[")) {
+                paramTypes.add(new ArrayDescriptor(p));
+            } else if (p.startsWith("L")) {
+                paramTypes.add(new ReferenceDescriptor(p));
+            } else {
+                paramTypes.add(PrimitiveTypeDescriptor.of(p));
+            }
+        }
+
+
+    }
+
+    private void setReturnType(String returnValue) {
+        if (returnValue.startsWith("L")) {
+            returnType = new ReferenceDescriptor(returnValue);
+        } else {
+            returnType = PrimitiveTypeDescriptor.of(returnValue);
+        }
+    }
+
+    public static void main(String[] args) {
+        MethodDescriptor s = new MethodDescriptor("(IDLjava/lang/Thread;)Ljava/lang/Object;");
+    }
 
     public List<TypeDescriptor> getParamTypes() {
         return paramTypes;
