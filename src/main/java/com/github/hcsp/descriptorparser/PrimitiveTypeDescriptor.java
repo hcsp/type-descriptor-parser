@@ -20,37 +20,10 @@ public enum PrimitiveTypeDescriptor implements TypeDescriptor {
     }
 
     public static PrimitiveTypeDescriptor of(String descriptor) {
-        switch (descriptor) {
-            case "B":
-                return PrimitiveTypeDescriptor.BYTE;
-            case "C":
-                return PrimitiveTypeDescriptor.CHAR;
-            case "D":
-                return PrimitiveTypeDescriptor.DOUBLE;
-            case "F":
-                return PrimitiveTypeDescriptor.FLOAT;
-            case "I":
-                return PrimitiveTypeDescriptor.INT;
-            case "J":
-                return PrimitiveTypeDescriptor.LONG;
-            case "S":
-                return PrimitiveTypeDescriptor.SHORT;
-            case "Z":
-                return PrimitiveTypeDescriptor.BOOLEAN;
-            case "V":
-                return PrimitiveTypeDescriptor.VOID;
-            default:
-                return null;
-        }
-
+        return null;
     }
 
     public static boolean isPrimitive(String descriptor) {
-        for (PrimitiveTypeDescriptor primitive : values()) {
-            if (primitive.getDescriptor().equals(descriptor)) {
-                return true;
-            }
-        }
         return false;
     }
 

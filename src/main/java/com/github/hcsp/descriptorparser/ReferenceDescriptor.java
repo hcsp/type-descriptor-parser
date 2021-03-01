@@ -11,8 +11,6 @@ public class ReferenceDescriptor implements TypeDescriptor {
     private String descriptor;
 
     public ReferenceDescriptor(String descriptor) {
-        this.descriptor = descriptor;
-        fqcn = descriptor.replaceAll("[L;]", "").replaceAll("/", ".");
     }
 
     @Override
