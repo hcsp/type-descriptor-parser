@@ -8,15 +8,9 @@ public class ReferenceDescriptor implements TypeDescriptor {
      * 全限定类名，如java.lang.Object
      */
     private String fqcn;
-    /**
-     * 描述符， 如 Ljava/lang/Object;
-     */
     private String descriptor;
 
     public ReferenceDescriptor(String descriptor) {
-        this.descriptor = descriptor;
-        this.fqcn = descriptor.substring(1, descriptor.length() - 1)
-                .replace("/", ".");
     }
 
     @Override
