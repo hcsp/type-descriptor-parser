@@ -18,7 +18,44 @@ public class MethodDescriptor implements TypeDescriptor {
     private String descriptor;
     private String name;
 
+    String methodRegex = "\\((.*)\\)(.*)";
+    String paramRegex = "(\\[*[BICDFJSZV]|\\[*L.*)";
+
     public MethodDescriptor(String descriptor) {
+        this.descriptor = descriptor;
+        Matcher matcher = Pattern.compile(methodRegex).matcher(descriptor);
+        if (matcher.find()) {
+            String paramDescriptor = matcher.group(1);
+            setParam(paramDescriptor);
+
+            String returnDescriptor = matcher.group(2);
+            seReturn(returnDescriptor);
+        }
+        String param = paramTypes.stream().map(TypeDescriptor::getName).collect(Collectors.joining(", "));
+        this.name = returnType.getName() + " (" + param + ")";
+
+    }
+
+    private void setParam(String param) {
+        Matcher matcher = Pattern.compile(paramRegex).matcher(param);
+        while (matcher.find()) {
+            String s = matcher.group();
+            if (s.startsWith("L")) {
+                this.paramTypes.add(new ReferenceDescriptor(s));
+            } else if (s.startsWith("[")) {
+                this.paramTypes.add(new ArrayDescriptor(s));
+            } else {
+                this.paramTypes.add(PrimitiveTypeDescriptor.of(s));
+            }
+        }
+    }
+
+    private void seReturn(String returnType) {
+        if (returnType.startsWith("L")) {
+            this.returnType = new ReferenceDescriptor(returnType);
+        } else {
+            this.returnType = PrimitiveTypeDescriptor.of(returnType);
+        }
     }
 
 
