@@ -18,9 +18,48 @@ public class MethodDescriptor implements TypeDescriptor {
     private String descriptor;
     private String name;
 
+    private static final String METHOD_DESC_REGEX = "\\((.*)\\)(.*)";
+    private static final String PARAM_DESC_REGEX = "(\\[*[BCDFIJSZV]|\\[*L.+)";
+    private static final Pattern METHOD_DESC_PATTERN = Pattern.compile(METHOD_DESC_REGEX);
+
     public MethodDescriptor(String descriptor) {
+        this.descriptor = descriptor;
+        Matcher matcher = METHOD_DESC_PATTERN.matcher(descriptor);
+        if (matcher.find()) {
+            String params = matcher.group(1);
+            initParamTypes(params);
+
+            String returnStr = matcher.group(2);
+            initReturnType(returnStr);
+        }
+        String methodSignature = paramTypes.stream()
+                .map(TypeDescriptor::getName)
+                .collect(Collectors.joining(", "));
+        this.name = returnType.getName() + " (" + methodSignature + ")";
+
     }
 
+    private void initParamTypes(String params) {
+        Matcher matcher = Pattern.compile(PARAM_DESC_REGEX).matcher(params);
+        while (matcher.find()) {
+            String s = matcher.group();
+            if (s.startsWith("[")) {
+                paramTypes.add(new ArrayDescriptor(s));
+            } else if (s.startsWith("L")) {
+                paramTypes.add(new ReferenceDescriptor(s));
+            } else {
+                paramTypes.add(PrimitiveTypeDescriptor.of(s));
+            }
+        }
+    }
+
+    private void initReturnType(String returnStr) {
+        if (returnStr.startsWith("L")) {
+            this.returnType = new ReferenceDescriptor(returnStr);
+        } else {
+            this.returnType = PrimitiveTypeDescriptor.of(returnStr);
+        }
+    }
 
     public List<TypeDescriptor> getParamTypes() {
         return paramTypes;

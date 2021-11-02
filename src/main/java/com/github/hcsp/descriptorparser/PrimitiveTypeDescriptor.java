@@ -1,5 +1,9 @@
 package com.github.hcsp.descriptorparser;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 /**
  * 代表原生类型的描述符
  */
@@ -20,11 +24,16 @@ public enum PrimitiveTypeDescriptor implements TypeDescriptor {
     }
 
     public static PrimitiveTypeDescriptor of(String descriptor) {
-        return null;
+        Map<String, PrimitiveTypeDescriptor> descriptorMap = Arrays.stream(PrimitiveTypeDescriptor.values())
+                .collect(Collectors.toMap(PrimitiveTypeDescriptor::getDescriptor, item -> item));
+        return descriptorMap.get(descriptor);
     }
 
     public static boolean isPrimitive(String descriptor) {
-        return false;
+        return Arrays.stream(PrimitiveTypeDescriptor.values())
+                .map(PrimitiveTypeDescriptor::getDescriptor)
+                .collect(Collectors.toList())
+                .contains(descriptor);
     }
 
     @Override
